@@ -26,4 +26,6 @@ you need to have netbeans IDE installed on your system and your resolution must 
 
 ![corrupt image](https://github.com/msaad1999/LOST/blob/master/assets/speedrun.gif)
 
-Once previous requirements are met, download the entier code in a folder, open netbeans and choose the open project option, and then open the entire folder as a netbeans project. once the project is opened, click the green arrow on the top to run the game.
+Once previous requirements are met, download the entier code in a folder, open netbeans and choose the open project option, and then open the entire folder as a netbeans project. once the project is opened, click the green arrow on the top to run the game.##
+## Original Game link
+https://github.com/msaad1999/LOST--Java-2D-Game

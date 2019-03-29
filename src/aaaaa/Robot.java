@@ -1,4 +1,4 @@
-package aaaaa;
+package LOST;
 
 
 import java.awt.Rectangle;
@@ -205,7 +205,7 @@ public class Robot {
         this.movingLeft = movingLeft;
     }
 
-    public ArrayList getProjectiles() {
+    public ArrayList<Projectile> getProjectiles() {
         return projectiles;
     }
 

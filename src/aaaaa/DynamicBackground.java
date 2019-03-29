@@ -1,4 +1,4 @@
-package aaaaa;
+package LOST;
 
 class DynamicBackground {
     
@@ -19,5 +19,10 @@ class DynamicBackground {
                         drawY = orbitY + orbitRadius * Math.sin(radian);
                         t+=1;
     }
+
+    public void setMousePress(boolean mousePress) {
+        this.mousePress = mousePress;
+    }
+    
     
 }

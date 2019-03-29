@@ -1,4 +1,4 @@
-package aaaaa;
+package LOST;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class Enemy {
         
         private void checkCollision() {
 		if (r.intersects(Robot.rect) || r.intersects(Robot.rect2)){
-			StartingClass.State = "dead";
+                                                            StartingClass.st.setState(StartingClass.starter.DEATH);
 			}
         }
 

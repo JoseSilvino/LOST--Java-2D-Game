@@ -1,4 +1,4 @@
-package aaaaa;
+package LOST;
 
 
 import java.awt.Color;
@@ -13,15 +13,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class StartingClass extends JPanel implements Runnable, KeyListener, MouseListener {
-
+public class StartingClass extends JPanel implements Runnable, KeyListener, MouseListener,Updatable {
+        private final HashEnum map = new HashEnum();
         private boolean ctrl_press;
         ArrayList projectiles;
-        
+        static State st = new State();
         static StartingClass starter = new StartingClass();
         
 	private static Robot robot;
@@ -39,8 +40,6 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
         
         public static BufferedImage tiledirt,grasstop, tilestone,tiletree,tilerock;
         private static ArrayList<Tile> tilearray = new ArrayList<Tile>();
-        
-        static String State = "start";
         Menu MENU;
         credits CREDITS;
         Intro INTRO;
@@ -84,7 +83,7 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                     grasstop = ImageIO.read(new File("data/grasstop.png"));
                     tilestone = ImageIO.read(new File("data/tilestone.png"));
                     tiletree = ImageIO.read(new File("data/tiletree.png"));
-                    tilerock = ImageIO.read(new File("data/tilerock.png"));;
+                    tilerock = ImageIO.read(new File("data/tilerock.png"));
 
                     bulletr = ImageIO.read(new File("data/bulletr.png"));
                     bulletl = ImageIO.read(new File("data/bulletl.png"));
@@ -246,37 +245,7 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
 	@Override
 	public void run() {
 		while (true) {
-                    
-                    switch (State){
-                        
-                        case "start":
-                            break;
-                        
-                        case "menu":
-                            MENU.update();
-                            break;
-                            
-                        case "dead":
-                            DEATH.update();
-                            break;
-                            
-                        case "credits":
-                            CREDITS.update();
-                            break;
-                            
-                        case "intro":
-                            INTRO.update();
-                            break;
-                            
-                        case "guide":
-                            GUIDE.update();
-                            break;
-                            
-                        case "game":
-                            gameUpdate();
-                            break;
-                        
-                    }
+                                                      st.update();
 			repaint();
                         
 			try {
@@ -300,33 +269,32 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                         
                         hanim_l.update(50);
                         hanim_r.update(50);
-                        
-
-			ArrayList projectiles = robot.getProjectiles();
-			for (int i = 0; i < projectiles.size(); i++) {
-				Projectile p = (Projectile) projectiles.get(i);
+                        ArrayList <Projectile>Projectiles = robot.getProjectiles();
+			for (int i = 0; i < Projectiles.size(); i++) {
+				Projectile p = Projectiles.get(i);
 				if (p.isVisible() == true) {
 					p.update();
 				} else {
-					projectiles.remove(i);
+					Projectiles.remove(i);
 				}
 			}
-                        
-                        for (int i = 0; i < Enemy.enemies.size(); i++){
-                            if (Enemy.enemies.get(i).getIsDead())
-                                Enemy.enemies.remove(i);
+                        Iterator <Enemy> it = Enemy.enemies.iterator();
+                        while(it.hasNext()){
+                            Enemy enemy = it.next();
+                            if (enemy.getIsDead())
+                                it.remove();
                         }
                 
-                        if (robot.isJumped() && robot.getDirection() == "right") {
+                        if (robot.isJumped() && "right".equals(Robot.getDirection())) {
 				currentSprite = characterJumped_r;
 			}
-                        else if (robot.isJumped() && robot.getDirection() == "left") {
+                        else if (robot.isJumped() && "left".equals(Robot.getDirection())) {
 				currentSprite = characterJumped_l;
 			} 
-                        else if ((robot.getDirection() == "right") && (robot.getSpeedX() == 0)&& robot.isDucked()==false){
+                        else if (("right".equals(Robot.getDirection())) && (robot.getSpeedX() == 0)&& robot.isDucked()==false){
                             currentSprite = c0;
                         }
-                        else if ((robot.getDirection() == "left") && (robot.getSpeedX() == 0) && robot.isDucked()==false){
+                        else if (("left".equals(Robot.getDirection())) && (robot.getSpeedX() == 0) && robot.isDucked()==false){
                             currentSprite = s0;
                         }
                         
@@ -337,10 +305,10 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                                 else if (robot.getSpeedX()>0){
                                     anim = anim_r;
                                 }
-                                else if (robot.isDucked() && robot.getDirection() == "right"){
+                                else if (robot.isDucked() && "right".equals(Robot.getDirection())){
                                     anim = crouchdown_r;
                                 }
-                                else if (robot.isDucked() && robot.getDirection() == "left"){
+                                else if (robot.isDucked() && "left".equals(Robot.getDirection())){
                                     anim = crouchdown_l;
                                 }
 				currentSprite = anim.getImage();
@@ -349,75 +317,52 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                         
                         
                         if (robot.getCenterY()>1400){
-                            State = "dead";
+                            st.setState(DEATH);
                         }
         }
+    public BufferedImage getStart() {
+        return start;
+    }
+    public BufferedImage getMenu() {
+        return menu;
+    }
+    public BufferedImage getLogo() {
+        return logo;
+    }
+    public BufferedImage getIntroButton() {
+        return introButton;
+    }
+    public BufferedImage getGuideButton() {
+        return guideButton;
+    }
+    public BufferedImage getCreditsButton() {
+        return creditsButton;
+    }
+    public BufferedImage getExit() {
+        return exit;
+    }
+    public BufferedImage getTeamlogo() {
+        return teamlogo;
+    }
+    public BufferedImage getPlayagain() {
+        return playagain;
+    }
+    public BufferedImage getDeathimg() {
+        return deathimg;
+    }
 
+    public boolean isCtrl_press() {
+        return ctrl_press;
+    }
+
+    public void setCtrl_press(boolean ctrl_press) {
+        this.ctrl_press = ctrl_press;
+    }
 
         @Override
-	public void paint(Graphics g) {
-            
-            switch (State) {
-                
-                case "start":
-                    g.drawImage(start, 0, 0, this);
-                    break;
-                
-                case "menu":
-                    
-                    try{
-                    g.drawImage(menu, (int) MENU.drawX,(int)MENU.drawY,this);
-                    g.drawImage(logo, 510, 32, this);
-                    g.drawImage(play,60,250,this);
-                    g.drawImage(introButton, 60, 300, this);
-                    g.drawImage(guideButton,60,350, this);
-                    g.drawImage(creditsButton,60,400,this);
-                    g.drawImage(exit,60,450,this);
-                    g.drawImage(teamlogo,60,680,this);
-                    }
-                    catch(Exception e){ }
-                    break;
-                    
-                case "dead":
-                    g.drawImage(deathimg, (int) DEATH.drawX,(int)DEATH.drawY,this);
-                    g.drawImage(menubutton,60,350, this);
-                    g.drawImage(playagain,60,400, this);
-                    break;
-                    
-                case "credits":
-                    
-                    g.drawImage(credits, (int)CREDITS.drawX, (int)CREDITS.drawY, this);
-                    g.drawImage(credits1,183,84, this);
-                    g.drawImage(backButton,20,700, this);
-                    break;
-                    
-                case "intro":
-                    g.drawImage(introback,(int)INTRO.drawX, (int)INTRO.drawY, this);
-                    g.drawImage(introfront,52, 70, this);
-                    g.drawImage(backButton,20,700, this);
-                    break;
-                    
-                case "guide":
-                    g.drawImage(guideback,(int)GUIDE.drawX,(int)GUIDE.drawY, this);
-                    g.drawImage(guidefront,478,170, this);
-                    g.drawImage(backButton, 20,700, this);
-                    break;
-                    
-                case "game":
-                    
-                    g.drawImage(background1, bg1.getBgX(), bg1.getBgY(), this);
-                    g.drawImage(background2, bg2.getBgX(), bg2.getBgY(), this);
-                    g.drawImage(background2, bg3.getBgX(), bg3.getBgY(), this);
-                    g.drawImage(background1, bg4.getBgX(), bg4.getBgY(), this);
-                    paintTiles(g);
-                    paintProjectiles(g);
-                    paintEnemies(g);
-                    g.drawImage(currentSprite, robot.getCenterX() - 61,robot.getCenterY() - 63, this);
-                       
-                    break;
-                    
+	public void paint(Graphics g) {                    
+                st.drawImage(g,this);
             }
-	}
         
         
         private void updateTiles() {
@@ -429,11 +374,13 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
 	}
         
         private void paintEnemies(Graphics g){
-            for (Enemy i: Enemy.enemies){
+            Iterator<Enemy> it = Enemy.enemies.iterator();
+            while (it.hasNext()){
+                Enemy i = it.next();
                         if (i.getCenterX()>-50 && i.getCenterX()<1366){
-                            if (i.direction == "right")
+                            if ("right".equals(i.direction))
                                 g.drawImage(hanim_r.getImage(), i.getCenterX() - 48, i.getCenterY() - 48, this);
-                            else if (i.direction == "left")
+                            else if ("left".equals(i.direction))
                                 g.drawImage(hanim_l.getImage(), i.getCenterX() - 48, i.getCenterY() - 48, this);
                         }
                     }
@@ -441,19 +388,20 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
         
         private void paintProjectiles(Graphics g){
                     projectiles = robot.getProjectiles();
-                    for (int i = 0; i < projectiles.size(); i++) {
-                        Projectile p = (Projectile) projectiles.get(i);
-                        
-                        if (robot.getDirection() == "right")
+                    Iterator<Projectile> it = projectiles.iterator();
+                    while (it.hasNext()) {
+                        Projectile p = it.next();
+                        if ("right".equals(Robot.getDirection()))
                             g.drawImage(bulletr, p.getX(), p.getY(), this);
-                        else if (robot.getDirection() == "left")
+                        else if ("left".equals(Robot.getDirection()))
                             g.drawImage(bulletl, p.getX(), p.getY(), this);
                     }   
         }
         
 	private void paintTiles(Graphics g) {
-		for (int i = 0; i < tilearray.size(); i++) {
-			Tile t = (Tile) tilearray.get(i);
+                                    Iterator <Tile> it = tilearray.iterator();
+		while(it.hasNext()) {
+			Tile t = it.next();
 			g.drawImage(t.getTileImage(), t.getTileX(), t.getTileY(), this);
 		}
 	}
@@ -465,24 +413,19 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             while (true) {
                 String line = reader.readLine();
-                // no more lines to read
                 if (line == null) {
                     reader.close();
                     break;
                 }
-
                 if (!line.startsWith("!")) {
                     lines.add(line);
                     width = Math.max(width, line.length());
-
                 }
             }
             height = lines.size();
-
             for (int j = 0; j < 20; j++) {
                 String line = (String) lines.get(j);
                 for (int i = 0; i < width; i++) {
-
                     if (i < line.length()) {
                         char ch = line.charAt(i);
                         if (ch == '*'){
@@ -493,167 +436,76 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                             tilearray.add(t);
                         }
                     }
-
                 }
             }
 
-    }
-        
-
+    }        
 	@Override
 	public void keyPressed(KeyEvent e) {
-            
-                if (State == "start"){
-                    if (e.getKeyCode() == KeyEvent.VK_SPACE)
-                        State = "menu";
-                }
-                
-                
-                if (State=="credits"||State == "intro"||State=="guide"){
-                    switch(e.getKeyCode()){
-                        case KeyEvent.VK_ESCAPE:
-                            State="menu";
-                            break;
-                    }
-                }
-                if (State=="game"){
-                    
-                    switch (e.getKeyCode()) {
-
-                        case KeyEvent.VK_ESCAPE:
-                                State="menu";
-                                break;
-
-                        case KeyEvent.VK_UP:
-                                System.out.println("Move up");
-                                break;
-
-                        case KeyEvent.VK_DOWN:
-                                robot.setDucked( true);
-                                break;
-
-                        case KeyEvent.VK_LEFT:
-                                robot.moveLeft();
-                                break;
-
-                        case KeyEvent.VK_RIGHT:
-                                robot.moveRight();
-                                break;
-
-                        case KeyEvent.VK_SPACE:
-                                robot.jump();
-                                break;
-                        case KeyEvent.VK_ENTER:
-                            State="game";
-                            break;
-
-                        case KeyEvent.VK_CONTROL:
-                            ctrl_press = true;
-                    }
-                }
-        }
-
+                        st.KeyPress(e);
+                  }
 	@Override
 	public void keyReleased(KeyEvent e) {
-                
-            
-            switch (e.getKeyCode()) {
-                
-		case KeyEvent.VK_UP:
-			break;
-
-		case KeyEvent.VK_DOWN:
-                    if (State == "game"){
-                        crouchdown_r.currentFrame = 0;
-                        crouchdown_l.currentFrame = 0;
-			robot.setDucked(false);
-                    }
-			break;
-
-		case KeyEvent.VK_LEFT:
-                        if (State == "game")
-                        	robot.stopLeft();
-			break;
-
-		case KeyEvent.VK_RIGHT:
-                        if (State == "game")
-        			robot.stopRight();
-			break;
-
-		case KeyEvent.VK_SPACE:
-                        if (State == "game"){
-                            robot.setMovingLeft(false);
-                            robot.setMovingRight(false);
-                        }
-			break;
-                
-                case KeyEvent.VK_CONTROL:
-                    if (State == "game"){
-                        if (ctrl_press){
-                            robot.shoot();
-                        }
-                    }
-                    break;
-
-		}
-
+                            st.KeyRelease(e);
 	}
-
 	@Override
-	public void keyTyped(KeyEvent e) {
-            
+	public void keyTyped(KeyEvent e) {            
 	}
-
 
     @Override
-    public void mouseClicked(MouseEvent me) {
-      
-    }
+    public void mouseClicked(MouseEvent me) { }
 
     @Override
     public void mousePressed(MouseEvent me) {
-        
-        switch (State){
-            case "credits":
-                CREDITS.mousePress(me);
-                break;
-            case "dead":
-                DEATH.mousePress(me);
-                break;
-            case "menu":
-                MENU.mousePress(me);
-                break;
-            case "intro":
-                INTRO.mousePress(me);
-                break;
-            case "guide":
-                GUIDE.mousePress(me);
-        }
+        st.mousePress(me);
     }
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        if(State=="menu")
-            MENU.mousePress = false;
-        if (State=="credits")
-            CREDITS.mousePress=false;
-        if(State=="intro")
-            MENU.mousePress = false;
-        if (State=="guide")
-            CREDITS.mousePress=false;
+        st.setMousePress(false);
     }
 
     @Override
-    public void mouseEntered(MouseEvent me) {
-       
-    }
+    public void mouseEntered(MouseEvent me) { }
 
     @Override
-    public void mouseExited(MouseEvent me) {
-        
-    }
+    public void mouseExited(MouseEvent me) { }
     
         // Getters
+    public BufferedImage getMenubutton() {
+        return menubutton;
+    }
+
+    public BufferedImage getPlay() {
+        return play;
+    }
+
+    public BufferedImage getBackButton() {
+        return backButton;
+    }
+
+    public BufferedImage getCredits1() {
+        return credits1;
+    }
+
+    public BufferedImage getCredits() {
+        return credits;
+    }
+    public BufferedImage getIntrofront() {
+        return introfront;
+    }
+
+    public BufferedImage getIntroback() {
+        return introback;
+    }
+
+    public BufferedImage getGuidefront() {
+        return guidefront;
+    }
+
+    public BufferedImage getGuideback() {
+        return guideback;
+    }
         
         public static Background getBg1() {
 		return bg1;
@@ -677,8 +529,6 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
         public static ArrayList getTileArray(){
             return tilearray;
         }
-
-      
     
         
     // Main Function
@@ -701,5 +551,42 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                     e.printStackTrace();
                 }
     }
-    
+
+    @Override
+    public void update() {
+       gameUpdate();
+    }
+
+    @Override
+    public void setMousePress(boolean mousePress) { }
+
+    @Override
+    public void pressKey(KeyEvent e) {
+          if(map.contains(e.getKeyCode())) {
+              Action action = map.get(e.getKeyCode());
+              action.press();
+          }
+    }
+
+    @Override
+    public void releaseKey(KeyEvent e) {
+        if(map.contains(e.getKeyCode())) {
+              Action action = map.get(e.getKeyCode());
+              action.release();
+          }
+    }
+    @Override
+    public void drawImage(Graphics g, StartingClass start) {
+                    g.drawImage(background1, bg1.getBgX(), bg1.getBgY(), this);
+                    g.drawImage(background2, bg2.getBgX(), bg2.getBgY(), this);
+                    g.drawImage(background2, bg3.getBgX(), bg3.getBgY(), this);
+                    g.drawImage(background1, bg4.getBgX(), bg4.getBgY(), this);
+                    paintTiles(g);
+                    paintProjectiles(g);
+                    paintEnemies(g);
+                    g.drawImage(currentSprite, robot.getCenterX() - 61,robot.getCenterY() - 63, this);
+                       
+    }
+    @Override
+    public void mousePress(MouseEvent e) { }
 }

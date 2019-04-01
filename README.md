@@ -11,13 +11,13 @@ https://github.com/msaad1999/LOST--Java-2D-Game
 
 2.Command
 
-3.State
+3.Strategy
 
 Classes Onde Foram Utilizados :
 
    Singleton : Death,Guide,Intro,credits,Robot,Menu alem das classes criadas para usar Command e State
    
-   State : StartingClass,Death,Guide,Intro,credits,Menu
+   Strategy : StartingClass,Death,Guide,Intro,credits,Menu
    
    Command : StartingClass,Robot
 
@@ -26,5 +26,9 @@ Porque Foram utilizados :
    Singleton foi utilizado pois todas as classes onde foi implementado originalmente sempre foram instanciadas uma vez,
    logo , por uma questão de melhorar a praticidade , já que todas não sofrem alteração alguma.
    
-   State foi utilizado pois no código original havia uma variável primitiva que fazia as alterações de tela , assim decidi 
-   utilizar State para mudar os estados da tela.
+   Strategy foi utilizado pois no código original havia uma variável primitiva que fazia as alterações de tela , assim decidi 
+   utilizar Strategy para mudar os estados da tela , alem de efetuar os métodos com finalidades similares nas classes que implementam sem
+   precisar de if e else.
+
+   Command foi utilizado para poder efetuar os comandos do jogador sem precisar de inumeros switchs ao apertar e soltar os botões do 
+   teclado

@@ -34,32 +34,31 @@ public class Projectile {
 		
 	}
         private void checkCollision() {
+            Robot robot = Robot.getInstance();
             ArrayList tiles = StartingClass.getTileArray();
 			for (int i = 0; i < tiles.size(); i++) {
 				Tile p = (Tile) tiles.get(i);
                                 if (r != null){
                                     if (r.intersects(p.getRectangle()) && (p.getType()==2||p.getType()==3||p.getType()==6)){
-                                        if (Robot.getDirection() == "right")
+                                        if ("right".equals(robot.getDirection()))
                                             x = p.getTileX()-35;    
-                                        else if (Robot.getDirection() == "left")
+                                        else if ("left".equals(robot.getDirection()))
                                             x = p.getTileX()+50;
                                         visible = false;
                                     }
                                 } 
                         }
-            for (Enemy i: Enemy.enemies){
-                
-                if(r.intersects(i.r)){
+                        Enemy.enemies.stream().filter((i) -> (r.intersects(i.r))).map((i) -> {
                             visible = false;
-                            if (i.health > 0) {
-                                    i.health -= 1;
-                            }
-                            if (i.health == 0) {
-                                i.setIsDead(true);
-                            }
-
-                    }
-            }
+                return i;
+            }).map((i) -> {
+                if (i.health > 0) {
+                    i.health --;
+                }
+                return i;
+            }).filter((i) -> (i.health == 0)).forEachOrdered((i) -> {
+                i.setIsDead(true);
+            });
 	}
 
 	public int getX() {

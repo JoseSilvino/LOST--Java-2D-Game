@@ -13,13 +13,22 @@ public class Space implements Action {
 
     @Override
     public void press() {
-       Robot robot = StartingClass.getRobot();
+       Robot robot = Robot.getInstance();
        robot.jump();
     }
-
+    private Space(){
+    super();
+    }
+    private static class SpaceHolder{
+        private static final Space INSTANCE = new Space();
+    }
+    public static Space getInstance(){
+        return SpaceHolder.INSTANCE;
+    }
+    
     @Override
     public void release() {
-        Robot robot = StartingClass.getRobot();
+        Robot robot = Robot.getInstance();
         robot.setMovingLeft(false);
         robot.setMovingRight(false);
     }

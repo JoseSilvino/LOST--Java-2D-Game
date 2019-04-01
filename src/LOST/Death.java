@@ -9,7 +9,15 @@ public class Death extends DynamicBackground implements Updatable{
     
     public double orbitX = -110; /* x-coordinate in orbit's center */
     public double orbitY = -60; /* y-coordinate in orbit's center */
-    
+    private Death(){
+        super();
+    }
+    private static class DeathHolder{
+        private static final Death INSTANCE = new Death();
+    }
+    public static Death getInstance(){
+        return DeathHolder.INSTANCE;
+    }
     @Override
     public void update(){
                         radian = orbitSpeed * t;
@@ -24,12 +32,12 @@ public class Death extends DynamicBackground implements Updatable{
         int my = e.getY();
         
         StartingClass.restart();
-        
+        State St = State.getInstance();
         if (mx>60 && mx<210 && my>350 && my<390){
-            StartingClass.st.setState(StartingClass.starter.MENU);
+            St.setState(Menu.getInstance());
         }
         else if(mx>60 && mx<210 && my>400 && my<440){
-            StartingClass.st.setState(StartingClass.starter);
+            St.setState(StartingClass.starter);
         }
     }
 
@@ -41,7 +49,8 @@ public class Death extends DynamicBackground implements Updatable{
 
     @Override
     public void drawImage(Graphics g, StartingClass start) {
-                            g.drawImage(start.getDeathimg(), (int) start.DEATH.drawX,(int)start.DEATH.drawY,start);
+        Death DEATH = Death.getInstance();
+                    g.drawImage(start.getDeathimg(), (int) DEATH.drawX,(int)DEATH.drawY,start);
                     g.drawImage(start.getMenubutton(),60,350, start);
                     g.drawImage(start.getPlayagain(),60,400, start);
     }

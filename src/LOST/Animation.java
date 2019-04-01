@@ -9,11 +9,11 @@ public class Animation {
 
 	ArrayList frames;
 	int currentFrame;
-        boolean loop;
+                  boolean loop;
 	private long animTime;
 	private long totalDuration;
 
-	public Animation(boolean l) {
+                public Animation(boolean l) {
                 loop = l;
 		frames = new ArrayList();
 		totalDuration = 0;
@@ -23,7 +23,6 @@ public class Animation {
 			currentFrame = 0;
 		}
 	}
-        
 
 	public synchronized void addFrame(BufferedImage image, long duration) {
 		totalDuration += duration;
@@ -53,7 +52,7 @@ public class Animation {
                 }}
 
 	public synchronized BufferedImage getImage() {
-		if (frames.size() == 0) {
+		if (frames.isEmpty()) {
 			return null;
 		} else {
 			return getFrame(currentFrame).image;

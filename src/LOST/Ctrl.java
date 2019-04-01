@@ -20,8 +20,16 @@ public class Ctrl implements Action {
     @Override
     public void release() {
         StartingClass Starter = StartingClass.starter;
-        Robot robot = StartingClass.getRobot();
+        Robot robot = Robot.getInstance();
         if(Starter.isCtrl_press()) robot.shoot();
     }
-    
+    private Ctrl(){
+        super();
+    }
+    private static class CtrlHolder{
+        private static final Ctrl INSTANCE = new Ctrl();
+    }
+    public static Ctrl getInstance(){
+        return CtrlHolder.INSTANCE;
+    }
 }

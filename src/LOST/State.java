@@ -18,14 +18,20 @@ public class State {
     public void mousePress(MouseEvent me) {
         state.mousePress(me);
     }
-    public State() {
+    private State() {
         this.state = new Start();
     }
-    public void setState(Updatable state) {
-        this.state = state;
+    private static class StateHolder{
+        private static final State INSTANCE = new State();
     }
-    public Updatable getState() {
-        return state;
+    public static State getInstance(){
+        return StateHolder.INSTANCE;
+    }
+    public  void setState(Updatable state) {
+       this.state = state;
+    }
+    public  Updatable getState() {
+        return this.state;
     }
     public void KeyRelease(KeyEvent e) {
         state.releaseKey(e);

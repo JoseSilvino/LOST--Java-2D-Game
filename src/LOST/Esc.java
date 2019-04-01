@@ -13,9 +13,18 @@ public class Esc implements Action {
 
     @Override
     public void press() {
-       StartingClass.st.setState(StartingClass.starter.MENU);
+        State St = State.getInstance();
+       St.setState(Menu.getInstance());
     }
-
+    private Esc(){
+        super();
+    }
+    private static class EscHolder{
+        private static final Esc INSTANCE = new Esc();
+    }
+    public static Esc getInstance(){
+        return EscHolder.INSTANCE;
+    }
     @Override
     public void release() { }
     

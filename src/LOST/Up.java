@@ -18,5 +18,14 @@ public class Up implements Action{
     public void press() {
       System.out.println("Move up");
     }
+    private Up(){
+        super();
+    }
+    private static class UpHolder{
+        private static final Up INSTANCE = new Up();
+    }
+    public static Up getInstance(){
+        return UpHolder.INSTANCE;
+    }
     
 }

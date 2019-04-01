@@ -13,12 +13,20 @@ public class Right implements Action {
 
     @Override
     public void press() {
-            StartingClass.getRobot().moveRight();
+            Robot.getInstance().moveRight();
     }
-
+    private static class RightHolder{
+        private static final Right INSTANCE = new Right();
+    }
+    private Right(){
+        super();
+    }
+    public static Right getInstance(){
+        return RightHolder.INSTANCE;
+    }
     @Override
     public void release() {
-        Robot robot = StartingClass.getRobot();
+        Robot robot = Robot.getInstance();
         robot.stopRight();
     }
     

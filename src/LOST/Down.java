@@ -16,13 +16,21 @@ public class Down implements Action {
         StartingClass starter =StartingClass.starter;
         starter.crouchdown_r.currentFrame = 0;
         starter.crouchdown_l.currentFrame = 0;
-        Robot robot = StartingClass.getRobot();
+        Robot robot = Robot.getInstance();
         robot.setDucked(false);
     }
-
+    private static class DownHolder{
+        private static final Down INSTANCE = new Down();
+    }
+    private Down(){
+        super();
+    }
+    public static Down getInstance(){
+        return DownHolder.INSTANCE;
+    }
     @Override
     public void press() {
-       StartingClass.getRobot().setDucked(true);
+      Robot.getInstance().setDucked(true);
     }
     
 }

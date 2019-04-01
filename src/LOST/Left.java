@@ -13,13 +13,21 @@ public class Left implements Action{
 
     @Override
     public void release() {
-        Robot robot = StartingClass.getRobot();
+        Robot robot = Robot.getInstance();
         robot.stopLeft();
     }
-
+    private Left(){
+        super();
+    }
+    private static class LeftHolder{
+        private static final Left INSTANCE = new Left();
+    }
+    public static Left getInstance(){
+        return LeftHolder.INSTANCE;
+    }
     @Override
     public void press() {
-        StartingClass.getRobot().moveLeft();
+        Robot.getInstance().moveLeft();
     }
     
 }

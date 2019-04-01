@@ -13,10 +13,19 @@ public class Enter implements Action {
 
     @Override
     public void release() { }
-
+    private Enter(){
+        super();
+    }
+    private static class EnterHolder{
+        private static final Enter INSTANCE = new Enter();
+    }
+    public static Enter getInstance(){
+        return EnterHolder.INSTANCE;
+    }
     @Override
     public void press() {
-        StartingClass.st.setState(StartingClass.starter);
+        State St = State.getInstance();
+        St.setState(StartingClass.starter);
     }
     
 }

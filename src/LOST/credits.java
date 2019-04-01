@@ -16,23 +16,31 @@ public class credits extends DynamicBackground implements Updatable{
                         drawY = orbitY + orbitRadius * Math.sin(radian);
                         t+=1;
     }
-
+    private credits(){
+        super();
+    }
+    private static class creditsHolder{
+        private static final credits INSTANCE = new credits();
+    }
+    public static credits getInstance(){
+    return creditsHolder.INSTANCE;
+    }
     @Override
  public void mousePress(MouseEvent e){
    int mx=e.getX();
    int my= e.getY();
-   
+   State St = State.getInstance();
     if (mx>60 && mx<210 && my>400 && my<440)
-       StartingClass.st.setState(StartingClass.starter.CREDITS);
+       St.setState(getInstance());
        
     if(mx>20 && mx<170 && my>700 && my<740)
-      StartingClass.st.setState(StartingClass.starter.MENU);
+      St.setState(Menu.getInstance());
     }   
 
     @Override
     public void pressKey(KeyEvent e) {
          if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
-            StartingClass.st.setState(StartingClass.starter.MENU);
+            State.getInstance().setState(Menu.getInstance());
         }
     }
 
@@ -41,8 +49,8 @@ public class credits extends DynamicBackground implements Updatable{
 
     @Override
     public void drawImage(Graphics g, StartingClass start) {
-                            
-                    g.drawImage(start.getCredits(), (int)start.CREDITS.drawX, (int)start.CREDITS.drawY, start);
+                    credits CREDITS = credits.getInstance();
+                    g.drawImage(start.getCredits(), (int)CREDITS.drawX, (int)CREDITS.drawY, start);
                     g.drawImage(start.getCredits1(),183,84, start);
                     g.drawImage(start.getBackButton(),20,700, start);
     }

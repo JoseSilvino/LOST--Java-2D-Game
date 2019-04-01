@@ -9,7 +9,15 @@ public class Menu extends DynamicBackground implements Updatable{
     
     public double orbitX = -700; /* x-coordinate in orbit's center */
     public double orbitY = -600; /* y-coordinate in orbit's center */
-    
+    private Menu(){
+        super();
+    }
+    private static class MenuHolder{
+        private static  final Menu INSTANCE = new Menu();
+    }
+    public static  Menu getInstance(){
+        return MenuHolder.INSTANCE;
+    }
     @Override
     public void update(){
                         radian = orbitSpeed * t;
@@ -22,15 +30,15 @@ public class Menu extends DynamicBackground implements Updatable{
     public void mousePress(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-        
+        State St = State.getInstance();
         if (mx>60 && mx<210 && my>250 && my<290) //Play button
-            StartingClass.st.setState(StartingClass.starter);
+            St.setState(StartingClass.starter);
         else if (mx>60 && mx<210 && my>300 && my<340) // intro button
-            StartingClass.st.setState(StartingClass.starter.INTRO);
+            St.setState(Intro.getInstance());
         else if (mx>60 && mx<210 && my>350 && my<390) //guide button
-            StartingClass.st.setState(StartingClass.starter.GUIDE);
+            St.setState(Guide.getInstance());
         else if (mx>60 && mx<210 && my>400 && my<440) // credits button
-           StartingClass.st.setState(StartingClass.starter.CREDITS);
+          St.setState(credits.getInstance());
         else if(mx>60 && mx<210 && my>450 && my<490)
             System.exit(0);
         
@@ -43,9 +51,9 @@ public class Menu extends DynamicBackground implements Updatable{
     public void releaseKey(KeyEvent e) { }
 
     @Override
-    public void drawImage(Graphics g, StartingClass start) {
-        
-                    g.drawImage(start.getMenu(), (int)start. MENU.drawX,(int)start.MENU.drawY,start);
+    public void drawImage(Graphics g, StartingClass start) {   
+        Menu MENU = getInstance();
+                    g.drawImage(start.getMenu(), (int) MENU.drawX,(int)MENU.drawY,start);
                     g.drawImage(start.getLogo(), 510, 32, start);
                     g.drawImage(start.getPlay(),60,250,start);
                     g.drawImage(start.getIntroButton(), 60, 300, start);

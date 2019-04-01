@@ -9,6 +9,15 @@ public class Intro extends DynamicBackground implements Updatable{
     public double orbitX = -50; /* x-coordinate in orbit's center */
     public double orbitY = -50; /* y-coordinate in orbit's center */
     
+    private Intro(){
+        super();
+    }
+    private static class IntroHolder{
+        private static final Intro INSTANCE = new Intro();
+    }
+    public static Intro getInstance(){
+        return IntroHolder.INSTANCE;
+    }
     @Override
     public void update(){
                         radian = orbitSpeed * t;
@@ -20,19 +29,20 @@ public class Intro extends DynamicBackground implements Updatable{
        public void mousePress(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-        
+        State St = State.getInstance();
         if (mx>60 && mx<210 && my>300 && my<340){
-            StartingClass.st.setState(StartingClass.starter.INTRO);            
+            St.setState(Intro.getInstance());            
         }
             else if(mx>20 && mx<170 && my>700 && my<740){
-            StartingClass.st.setState(StartingClass.starter.MENU);
+            St.setState(Menu.getInstance());
         }
     }   
 
     @Override
     public void pressKey(KeyEvent e) {
+        State St = State.getInstance();
         if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
-            StartingClass.st.setState(StartingClass.starter.MENU);
+            St.setState(Menu.getInstance());
         }
     }
 
@@ -42,8 +52,8 @@ public class Intro extends DynamicBackground implements Updatable{
 
     @Override
     public void drawImage(Graphics g, StartingClass start) {
-   
-                    g.drawImage(start.getIntroback(),(int)start.INTRO.drawX, (int)start.INTRO.drawY, start);
+                    Intro INTRO = Intro.getInstance();
+                    g.drawImage(start.getIntroback(),(int)INTRO.drawX, (int)INTRO.drawY, start);
                     g.drawImage(start.getIntrofront(),52, 70, start);
                     g.drawImage(start.getBackButton(),20,700, start);
     }

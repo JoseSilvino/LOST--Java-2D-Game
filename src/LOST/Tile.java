@@ -7,7 +7,7 @@ public class Tile {
     
     private int tileX, tileY, speedX, type;
     public Image tileImage;
-    private Robot robot = StartingClass.getRobot();
+    private Robot robot = Robot.getInstance();
     private Background bg = StartingClass.getBg1();
     private Rectangle r;
 
@@ -17,18 +17,25 @@ public class Tile {
         tileY = y*40;
         type = typeint;
         r = new Rectangle();    
-        if (type == 2)
-            tileImage = StartingClass.grasstop; 
-        else if (type == 3)
-            tileImage = StartingClass.tiledirt;
-        else if (type == 4)
-            tileImage = StartingClass.tilestone;
-        else if (type == 5)
-            tileImage = StartingClass.tiletree;
-        else if (type == 6)
-            tileImage = StartingClass.tilerock;
-        else {
-            type = 0;
+        switch (type) {
+            case 2:
+                tileImage = StartingClass.grasstop;
+                break;
+            case 3:
+                tileImage = StartingClass.tiledirt;
+                break;
+            case 4:
+                tileImage = StartingClass.tilestone;
+                break;
+            case 5:
+                tileImage = StartingClass.tiletree;
+                break;
+            case 6:
+                tileImage = StartingClass.tilerock;
+                break;
+            default:
+                type = 0;
+                break;
         }
     }
     public void update(){
@@ -36,20 +43,20 @@ public class Tile {
         tileX += speedX;  
         r.setBounds(tileX, tileY, 40, 40);
         
-        if (r.intersects(Robot.yellowRed) && type != 0) {
+        if (r.intersects(robot.yellowRed) && type != 0) {
                                 
-				checkVerticalCollision(Robot.rect, Robot.rect2);
-				checkSideCollision(Robot.footleft, Robot.footright);
+				checkVerticalCollision(robot.rect, robot.rect2);
+				checkSideCollision(robot.footleft, robot.footright);
 			}
-        for (Enemy i: Enemy.enemies){
-                if(r.intersects(i.r)  && ( type == 2 || type == 3 || type == 6 )){
-                        i.setSpeedX(0);
-                        if (i.getCenterX()<tileX)
-                            i.setCenterX(tileX-55);
-                        else if (i.getCenterX()>tileX)
-                            i.setCenterX(tileX+56);
-                    }
-            }
+        Enemy.enemies.stream().filter((i) -> (r.intersects(i.r)  && ( type == 2 || type == 3 || type == 6 ))).map((i) -> {
+            i.setSpeedX(0);
+            return i;
+        }).forEachOrdered((i) -> {
+            if (i.getCenterX()<tileX)
+                i.setCenterX(tileX-55);
+            else if (i.getCenterX()>tileX)
+                i.setCenterX(tileX+56);
+        });
     }
     
    public int getTileX() {

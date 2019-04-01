@@ -19,10 +19,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class StartingClass extends JPanel implements Runnable, KeyListener, MouseListener,Updatable {
-        private final HashEnum map = new HashEnum();
+        private final HashEnum map = HashEnum.getInstance();
         private boolean ctrl_press;
-        ArrayList projectiles;
-        static State st = new State();
+        private ArrayList projectiles;
+        private final State st = State.getInstance();
         static StartingClass starter = new StartingClass();
         
 	private static Robot robot;
@@ -40,11 +40,7 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
         
         public static BufferedImage tiledirt,grasstop, tilestone,tiletree,tilerock;
         private static ArrayList<Tile> tilearray = new ArrayList<Tile>();
-        Menu MENU;
-        credits CREDITS;
-        Intro INTRO;
-        Guide GUIDE;
-        Death DEATH;
+        private Death DEATH;
         
         public static void restart(){
                 robot.getProjectiles().clear();
@@ -54,7 +50,7 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
 		bg2 = new Background(1920, 0);
                 bg3 = new Background(-1920,0);
                 bg4 = new Background(-1920*2,0);
-                robot = new Robot();
+                robot.restart();
                 try {
                     starter.loadMap("data/map1.txt");
                 } 
@@ -212,9 +208,9 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                 anim_l.addFrame(s11, 50);
                 
                 anim = anim_r;
+                currentSprite = c0;
                 
-		currentSprite = c0;
-	}
+                }
 
 	
 	public void start() {
@@ -222,12 +218,8 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
 		bg2 = new Background(1920, 0);
                 bg3 = new Background(-1920,0);
                 bg4 = new Background(-1920*2,0);
-                robot = new Robot();
-                MENU = new Menu();
-                CREDITS= new credits();
-                INTRO= new Intro();
-                GUIDE= new Guide();
-                DEATH = new Death();
+                robot = Robot.getInstance();
+                DEATH = Death.getInstance();
                 
                 // Initialize Tiles
                 try {
@@ -285,16 +277,16 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                                 it.remove();
                         }
                 
-                        if (robot.isJumped() && "right".equals(Robot.getDirection())) {
+                        if (robot.isJumped() && "right".equals(robot.getDirection())) {
 				currentSprite = characterJumped_r;
 			}
-                        else if (robot.isJumped() && "left".equals(Robot.getDirection())) {
+                        else if (robot.isJumped() && "left".equals(robot.getDirection())) {
 				currentSprite = characterJumped_l;
 			} 
-                        else if (("right".equals(Robot.getDirection())) && (robot.getSpeedX() == 0)&& robot.isDucked()==false){
+                        else if (("right".equals(robot.getDirection())) && (robot.getSpeedX() == 0)&& robot.isDucked()==false){
                             currentSprite = c0;
                         }
-                        else if (("left".equals(Robot.getDirection())) && (robot.getSpeedX() == 0) && robot.isDucked()==false){
+                        else if (("left".equals(robot.getDirection())) && (robot.getSpeedX() == 0) && robot.isDucked()==false){
                             currentSprite = s0;
                         }
                         
@@ -305,10 +297,10 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                                 else if (robot.getSpeedX()>0){
                                     anim = anim_r;
                                 }
-                                else if (robot.isDucked() && "right".equals(Robot.getDirection())){
+                                else if (robot.isDucked() && "right".equals(robot.getDirection())){
                                     anim = crouchdown_r;
                                 }
-                                else if (robot.isDucked() && "left".equals(Robot.getDirection())){
+                                else if (robot.isDucked() && "left".equals(robot.getDirection())){
                                     anim = crouchdown_l;
                                 }
 				currentSprite = anim.getImage();
@@ -366,7 +358,6 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
         
         
         private void updateTiles() {
-
 		for (int i = 0; i < tilearray.size(); i++) {
 			Tile t = (Tile) tilearray.get(i);
 			t.update();
@@ -391,9 +382,9 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                     Iterator<Projectile> it = projectiles.iterator();
                     while (it.hasNext()) {
                         Projectile p = it.next();
-                        if ("right".equals(Robot.getDirection()))
+                        if ("right".equals(robot.getDirection()))
                             g.drawImage(bulletr, p.getX(), p.getY(), this);
-                        else if ("left".equals(Robot.getDirection()))
+                        else if ("left".equals(robot.getDirection()))
                             g.drawImage(bulletl, p.getX(), p.getY(), this);
                     }   
         }
@@ -523,9 +514,6 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
             return bg4;
         }
         
-        public static Robot getRobot(){
-		return robot;
-	}
         public static ArrayList getTileArray(){
             return tilearray;
         }

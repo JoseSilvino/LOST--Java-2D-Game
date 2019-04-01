@@ -22,35 +22,40 @@ public class Enemy {
         
 	// Behavioral Methods
 	public static void update() {
-            
-            for (Enemy i: enemies) {
-                  
-                    i.follow();
-                    i.centerX += i.speedX;
-                    i.speedX = i.bg.getSpeedX() * 5 + i.movementSpeed;
-                    i.r.setBounds(i.centerX - 30, i.centerY-10, 85, 60);
-
-                    if (i.r.intersects(Robot.yellowRed))
-                            i.checkCollision();
-            }
+            Robot robot = Robot.getInstance();
+            enemies.stream().map((i) -> {
+                i.follow();
+                return i;
+            }).map((i) -> {
+                i.centerX += i.speedX;
+                return i;
+            }).map((i) -> {
+                i.speedX = i.bg.getSpeedX() * 5 + i.movementSpeed;
+                return i;
+            }).map((i) -> {
+                i.r.setBounds(i.centerX - 30, i.centerY-10, 85, 60);
+                return i;
+            }).filter((i) -> (i.r.intersects(robot.yellowRed))).forEachOrdered((i) -> {
+                i.checkCollision();
+            });
 	}
         
         public void follow() {
 		
-                if (centerX - StartingClass.getRobot().getCenterX() >650){
+                if (centerX - Robot.getInstance().getCenterX() >650){
                     this.movementSpeed = 0;
                 }
-                else if (StartingClass.getRobot().getCenterX() - centerX > 650){
+                else if (Robot.getInstance().getCenterX() - centerX > 650){
                     this.movementSpeed = 0;
                 }
 
-		else if (Math.abs(StartingClass.getRobot().getCenterX() - centerX) < 5) {
+		else if (Math.abs(Robot.getInstance().getCenterX() - centerX) < 5) {
 			this.movementSpeed = 0;
 		}
 
 		else {
 
-			if (StartingClass.getRobot().getCenterX() >= centerX) {
+			if (Robot.getInstance().getCenterX() >= centerX) {
 				this.direction = "right";
                                 this.movementSpeed = 2;
 			} 
@@ -63,15 +68,13 @@ public class Enemy {
 	}
         
         private void checkCollision() {
-		if (r.intersects(Robot.rect) || r.intersects(Robot.rect2)){
-                                                            StartingClass.st.setState(StartingClass.starter.DEATH);
+            Robot robot = Robot.getInstance();
+		if (r.intersects(robot.rect) || r.intersects(robot.rect2)){
+                                                            State St = State.getInstance();
+                                                            St.setState(Death.getInstance());
 			}
         }
 
-
-	public void attack() {
-
-	}
 
 	public int getMaxHealth() {
 		return maxHealth;

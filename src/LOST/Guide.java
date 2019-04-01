@@ -10,7 +10,15 @@ public class Guide extends DynamicBackground implements Updatable{
     
     public double orbitX = -20; /* x-coordinate in orbit's center */
     public double orbitY = -20; /* y-coordinate in orbit's center */
-    
+    private Guide(){
+        super();
+    }
+    private static class GuideHolder{
+    private static final Guide INSTANCE = new Guide();
+   }
+    public static Guide getInstance(){
+        return GuideHolder.INSTANCE;
+    }
     @Override
     public void update(){
                         radian = orbitSpeed * t;
@@ -23,20 +31,21 @@ public class Guide extends DynamicBackground implements Updatable{
     public void mousePress(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-        
+        State St = State.getInstance();
         if (mx>60 && mx<210 && my>350 && my<390){
-            StartingClass.st.setState(StartingClass.starter.GUIDE);
+            St.setState(Guide.getInstance());
             
         }
             else if(mx>20 && mx<170 && my>700 && my<740){            
-            StartingClass.st.setState(StartingClass.starter.MENU);
+            St.setState(Menu.getInstance());
         }
     }
 
     @Override
     public void pressKey(KeyEvent e) {
+        State St = State.getInstance();
                 if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
-            StartingClass.st.setState(StartingClass.starter.MENU);
+            St.setState(Menu.getInstance());
         }
     }
 
@@ -45,7 +54,8 @@ public class Guide extends DynamicBackground implements Updatable{
 
     @Override
     public void drawImage(Graphics g, StartingClass start) {
-                        g.drawImage(start.getGuideback(),(int)start.GUIDE.drawX,(int)start.GUIDE.drawY, start);
+                    Guide GUIDE = getInstance();
+                    g.drawImage(start.getGuideback(),(int)GUIDE.drawX,(int)GUIDE.drawY, start);
                     g.drawImage(start.getGuidefront(),478,170, start);
                     g.drawImage(start.getBackButton(), 20,700, start);
 

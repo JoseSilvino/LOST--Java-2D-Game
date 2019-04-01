@@ -25,7 +25,7 @@ public class Start implements Updatable {
     @Override
     public void pressKey(KeyEvent e) {
        if(e.getKeyCode()==KeyEvent.VK_SPACE) {
-           StartingClass.st.setState(StartingClass.starter.MENU);
+           State.getInstance().setState(Menu.getInstance());
        }
     }
 

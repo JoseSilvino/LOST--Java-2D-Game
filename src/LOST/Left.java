@@ -27,7 +27,8 @@ public class Left implements Action{
     }
     @Override
     public void press() {
-        Robot.getInstance().moveLeft();
+        Robot.getInstance().DirectionIndex=0;
+        Robot.getInstance().move();
     }
     
 }

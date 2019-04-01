@@ -13,7 +13,8 @@ public class Right implements Action {
 
     @Override
     public void press() {
-            Robot.getInstance().moveRight();
+        Robot.getInstance().DirectionIndex=1;
+            Robot.getInstance().move();
     }
     private static class RightHolder{
         private static final Right INSTANCE = new Right();

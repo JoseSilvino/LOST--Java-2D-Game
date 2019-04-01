@@ -39,7 +39,7 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
         public static Animation hanim_l,hanim_r;
         
         public static BufferedImage tiledirt,grasstop, tilestone,tiletree,tilerock;
-        private static ArrayList<Tile> tilearray = new ArrayList<Tile>();
+        private static final ArrayList<Tile> tilearray = new ArrayList<Tile>();
         private Death DEATH;
         
         public static void restart(){
@@ -276,42 +276,43 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                             if (enemy.getIsDead())
                                 it.remove();
                         }
-                
-                        if (robot.isJumped() && "right".equals(robot.getDirection())) {
-				currentSprite = characterJumped_r;
-			}
-                        else if (robot.isJumped() && "left".equals(robot.getDirection())) {
-				currentSprite = characterJumped_l;
-			} 
-                        else if (("right".equals(robot.getDirection())) && (robot.getSpeedX() == 0)&& robot.isDucked()==false){
-                            currentSprite = c0;
-                        }
-                        else if (("left".equals(robot.getDirection())) && (robot.getSpeedX() == 0) && robot.isDucked()==false){
-                            currentSprite = s0;
-                        }
-                        
-                        else {
-                                if (robot.getSpeedX()<0){
-                                    anim = anim_l;
-                                }
-                                else if (robot.getSpeedX()>0){
-                                    anim = anim_r;
-                                }
-                                else if (robot.isDucked() && "right".equals(robot.getDirection())){
-                                    anim = crouchdown_r;
-                                }
-                                else if (robot.isDucked() && "left".equals(robot.getDirection())){
-                                    anim = crouchdown_l;
-                                }
-				currentSprite = anim.getImage();
-                                anim.update(10);
-			}
-                        
-                        
+                        robot.changeSprite(starter);
                         if (robot.getCenterY()>1400){
                             st.setState(DEATH);
                         }
         }
+
+    public void setCurrentSprite(BufferedImage currentSprite) {
+        this.currentSprite = currentSprite;
+    }
+
+    public void setAnim(Animation anim) {
+        this.anim = anim;
+    }
+
+    public BufferedImage getCharacterJumped_r() {
+        return characterJumped_r;
+    }
+
+    public BufferedImage getCharacterJumped_l() {
+        return characterJumped_l;
+    }
+        
+    public void animUpdate(){
+        anim.update(10);
+    }
+    public Animation getAnim() {
+        return anim;
+    }
+        
+    public BufferedImage getS0() {
+        return s0;
+    }
+
+    public BufferedImage getC0() {
+        return c0;
+    }
+        
     public BufferedImage getStart() {
         return start;
     }
@@ -382,9 +383,9 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                     Iterator<Projectile> it = projectiles.iterator();
                     while (it.hasNext()) {
                         Projectile p = it.next();
-                        if ("right".equals(robot.getDirection()))
+                        if (robot.DirectionIndex==1)
                             g.drawImage(bulletr, p.getX(), p.getY(), this);
-                        else if ("left".equals(robot.getDirection()))
+                        else if (robot.DirectionIndex==0)
                             g.drawImage(bulletl, p.getX(), p.getY(), this);
                     }   
         }
@@ -399,8 +400,7 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
         private void loadMap(String filename) throws IOException {
             ArrayList lines = new ArrayList();
             int width = 0;
-            int height = 0;
-
+            
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             while (true) {
                 String line = reader.readLine();
@@ -413,7 +413,6 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                     width = Math.max(width, line.length());
                 }
             }
-            height = lines.size();
             for (int j = 0; j < 20; j++) {
                 String line = (String) lines.get(j);
                 for (int i = 0; i < width; i++) {

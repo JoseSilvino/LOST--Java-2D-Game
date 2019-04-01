@@ -40,9 +40,9 @@ public class Projectile {
 				Tile p = (Tile) tiles.get(i);
                                 if (r != null){
                                     if (r.intersects(p.getRectangle()) && (p.getType()==2||p.getType()==3||p.getType()==6)){
-                                        if ("right".equals(robot.getDirection()))
+                                        if (1==robot.DirectionIndex)
                                             x = p.getTileX()-35;    
-                                        else if ("left".equals(robot.getDirection()))
+                                        else if (0==robot.DirectionIndex)
                                             x = p.getTileX()+50;
                                         visible = false;
                                     }

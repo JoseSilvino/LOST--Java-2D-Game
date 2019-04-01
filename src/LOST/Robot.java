@@ -16,29 +16,27 @@ public class Robot {
     private boolean movingLeft ;
     private boolean movingRight ;
     private boolean ducked ;
-    private  String direction ;
 
     private int speedX ;
     private int speedY ;
     public  Rectangle rect  ;
     public  Rectangle rect2  ;
     public  Rectangle yellowRed ;
-    
     public  Rectangle footleft  ;
     public  Rectangle footright  ;
-    
+    public int DirectionIndex ;
     private Background bg1 ;
     private Background bg2 ;
     private Background bg3 ;
     private Background bg4 ;
     public void restart(){
+        DirectionIndex =1;
         centerX = 500;
         centerY=560;
         jumped = false;
         movingLeft = false;
         movingRight = false;
         ducked = false;
-        direction = "right";
         speedX = 0;
         speedY =0;
         rect = new Rectangle(0,0,0,0);
@@ -61,7 +59,7 @@ public class Robot {
     public static Robot getInstance(){
         return RobotHolder.INSTANCE;
     }
-    
+
     private final ArrayList<Projectile> projectiles = new ArrayList<>();
 
     public void update() {
@@ -93,6 +91,7 @@ public class Robot {
         // Updates Y Position
         centerY += speedY;
 
+     
         // Handles Jumping
 
           speedY += 1;
@@ -110,21 +109,16 @@ public class Robot {
 
 
     }
-
-    public void moveRight() {
-        direction = "right";
-        if (ducked == false) {
-            speedX = MOVESPEED;
-        }
+    public void changeSprite(StartingClass start){
+       RobotDir.values()[DirectionIndex].getDirection().changeSprite(start);
+    }
+    public void move(){
+        RobotDir.values()[DirectionIndex].getDirection().move();
     }
 
-    public void moveLeft() {
-        direction = "left";
-        if (ducked == false) {
-            speedX = -MOVESPEED;
-        }
+    public boolean isStopped(){
+        return speedX==0;
     }
-
     public void stopRight() {
         setMovingRight(false);
         stop();
@@ -139,13 +133,8 @@ public class Robot {
         if (isMovingRight() == false && isMovingLeft() == false) {
             speedX = 0;
         }
-
-        if (isMovingRight() == false && isMovingLeft() == true) {
-            moveLeft();
-        }
-
-        if (isMovingRight() == true && isMovingLeft() == false) {
-            moveRight();
+        else {
+            move();
         }
 
     }
@@ -160,10 +149,7 @@ public class Robot {
 
     public void shoot() {
         Projectile p;
-        if ("right".equals(getDirection()))
-            p = new Projectile(centerX-5, centerY-5,true);
-        else
-            p = new Projectile(centerX-5, centerY-5,false);
+        p = RobotDir.values()[DirectionIndex].getDirection().shoot();
 	projectiles.add(p);
     }
     public int getCenterX() {
@@ -173,8 +159,13 @@ public class Robot {
     public int getCenterY() {
         return centerY;
     }
-
-    public boolean isJumped() {
+    public static boolean InstanceisJumped(){
+        return getInstance().isJumped();
+    }
+    public static boolean InstanceisDucked(){
+        return getInstance().isDucked();
+    }
+    public  boolean isJumped() {
         return jumped;
     }
 
@@ -234,9 +225,5 @@ public class Robot {
         return projectiles;
     }
 
-   
-    public  String getDirection(){
-        return direction;
-    }
 
 }

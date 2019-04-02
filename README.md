@@ -15,13 +15,32 @@ https://github.com/msaad1999/LOST--Java-2D-Game
 
 Classes Onde Foram Utilizados :
 
-   Singleton : Death,Guide,Intro,credits,Robot,Menu alem das classes criadas para usar Command e State
+   Singleton : Death,Guide,Intro,credits,Robot,Menu alem das classes criadas para usar Command e Strategy
    
    Strategy : StartingClass,Death,Guide,Intro,credits,Menu
-   
+              Métodos : 
+              
+                       StartingClass : run,gameUpdate,paint,mousePressed,mouseReleased.
+                       
+                       Death : update,mousePress,drawImage.
+                       
+                       Guide : update,mousePress,drawImage.
+                       
+                       Intro : update,mousePress,drawImage.
+                       
+                       credits : update,mousePress,drawImage.
+                       
+                       Menu : update,mousePress,drawImage.
+                       
    Command : StartingClass,Robot
-
-Porque Foram utilizados :
+   
+              Métodos :
+              
+                        StartingClass : keyPress,keyRelease.
+                        
+                        Robot : move,changeSprite.
+                        
+Porque Foram Utilizados :
    
    Singleton foi utilizado pois todas as classes onde foi implementado originalmente sempre foram instanciadas uma vez,
    logo , por uma questão de melhorar a praticidade , já que todas não sofrem alteração alguma.

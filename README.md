@@ -5,6 +5,8 @@ https://github.com/msaad1999/LOST--Java-2D-Game
 ### Um erro que ocorria no projeto original ao clicar para sair foi corrigido
 ### O Fato de o robô ser instanciado novamente após a morte foi alterado , ao invés disso , ele retorna às configurações originais
 
+### Para rodar o programa em ambas as versões , crie um projeto no seu IDE e coloque as pastas src e data
+
 #Padrões de projeto utilizados na refatoração
 
 1.Singleton

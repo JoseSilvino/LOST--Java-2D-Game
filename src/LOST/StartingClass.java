@@ -18,13 +18,12 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class StartingClass extends JPanel implements Runnable, KeyListener, MouseListener,Updatable {
+public class StartingClass extends JPanel implements Runnable, KeyListener, MouseListener,Screen {
         private final HashEnum map = HashEnum.getInstance();
         private boolean ctrl_press;
         private ArrayList projectiles;
-        private final State st = State.getInstance();
         static StartingClass starter = new StartingClass();
-        
+         private static Screen screen = Start.getInstance();
 	private static Robot robot;
 	private BufferedImage  currentSprite, c0,c1, c2, c3,c4,c5,c6,c7,c8,c9, c10,c11,
                         s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,crouch_r0,crouch_r1,crouch_r2,crouch_r3,
@@ -39,8 +38,16 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
         public static Animation hanim_l,hanim_r;
         
         public static BufferedImage tiledirt,grasstop, tilestone,tiletree,tilerock;
-        private static final ArrayList<Tile> tilearray = new ArrayList<Tile>();
+        private static  ArrayList<Tile> tilearray = new ArrayList<Tile>();
         private Death DEATH;
+
+    public static Screen getScreen() {
+        return screen;
+    }
+
+    public static void setScreen(Screen screen) {
+        StartingClass.screen = screen;
+    }
         
         public static void restart(){
                 robot.getProjectiles().clear();
@@ -237,7 +244,7 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
 	@Override
 	public void run() {
 		while (true) {
-                                                      st.update();
+                                                      screen.update();
 			repaint();
                         
 			try {
@@ -253,7 +260,7 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                         
                         robot.update();
                         bg1.update();
-			bg2.update();
+                        bg2.update();
                         bg3.update();
                         bg4.update();
                         Enemy.update();
@@ -278,7 +285,7 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
                         }
                         robot.changeSprite(starter);
                         if (robot.getCenterY()>1400){
-                            st.setState(DEATH);
+                           screen = DEATH;
                         }
         }
 
@@ -354,7 +361,7 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
 
         @Override
 	public void paint(Graphics g) {                    
-                st.drawImage(g,this);
+                screen.drawImage(g,this);
             }
         
         
@@ -432,11 +439,11 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
     }        
 	@Override
 	public void keyPressed(KeyEvent e) {
-                        st.KeyPress(e);
+                        screen.pressKey(e);
                   }
 	@Override
 	public void keyReleased(KeyEvent e) {
-                            st.KeyRelease(e);
+                            screen.releaseKey(e);
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {            
@@ -447,12 +454,12 @@ public class StartingClass extends JPanel implements Runnable, KeyListener, Mous
 
     @Override
     public void mousePressed(MouseEvent me) {
-        st.mousePress(me);
+        screen.mousePress(me);
     }
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        st.setMousePress(false);
+        screen.setMousePress(false);
     }
 
     @Override

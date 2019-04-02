@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 
-public class Guide extends DynamicBackground implements Updatable{
+public class Guide extends DynamicBackground implements Screen{
     
     public double orbitX = -20; /* x-coordinate in orbit's center */
     public double orbitY = -20; /* y-coordinate in orbit's center */
@@ -31,21 +31,19 @@ public class Guide extends DynamicBackground implements Updatable{
     public void mousePress(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-        State St = State.getInstance();
         if (mx>60 && mx<210 && my>350 && my<390){
-            St.setState(Guide.getInstance());
+            StartingClass.setScreen(Guide.getInstance());
             
         }
             else if(mx>20 && mx<170 && my>700 && my<740){            
-            St.setState(Menu.getInstance());
+            StartingClass.setScreen(Menu.getInstance());
         }
     }
 
     @Override
     public void pressKey(KeyEvent e) {
-        State St = State.getInstance();
                 if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
-            St.setState(Menu.getInstance());
+            StartingClass.setScreen(Menu.getInstance());
         }
     }
 

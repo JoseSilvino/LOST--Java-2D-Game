@@ -69,10 +69,9 @@ public class Enemy {
         
         private void checkCollision() {
             Robot robot = Robot.getInstance();
-		if (r.intersects(robot.rect) || r.intersects(robot.rect2)){
-                                                            State St = State.getInstance();
-                                                            St.setState(Death.getInstance());
-			}
+            if (r.intersects(robot.rect) || r.intersects(robot.rect2)){
+            StartingClass.setScreen(Death.getInstance());
+            }
         }
 
 

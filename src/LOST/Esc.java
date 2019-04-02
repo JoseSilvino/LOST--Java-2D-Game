@@ -13,8 +13,7 @@ public class Esc implements Action {
 
     @Override
     public void press() {
-        State St = State.getInstance();
-       St.setState(Menu.getInstance());
+       StartingClass.setScreen(Menu.getInstance());
     }
     private Esc(){
         super();

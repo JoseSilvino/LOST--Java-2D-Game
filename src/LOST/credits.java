@@ -3,7 +3,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public class credits extends DynamicBackground implements Updatable{
+public class credits extends DynamicBackground implements Screen{
     
     public double orbitX = -50; /* x-coordinate in orbit's center */
     public double orbitY = -50; /* y-coordinate in orbit's center */
@@ -29,18 +29,17 @@ public class credits extends DynamicBackground implements Updatable{
  public void mousePress(MouseEvent e){
    int mx=e.getX();
    int my= e.getY();
-   State St = State.getInstance();
     if (mx>60 && mx<210 && my>400 && my<440)
-       St.setState(getInstance());
+       StartingClass.setScreen(getInstance());
        
     if(mx>20 && mx<170 && my>700 && my<740)
-      St.setState(Menu.getInstance());
+      StartingClass.setScreen(Menu.getInstance());
     }   
 
     @Override
     public void pressKey(KeyEvent e) {
          if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
-            State.getInstance().setState(Menu.getInstance());
+            StartingClass.setScreen(Menu.getInstance());
         }
     }
 

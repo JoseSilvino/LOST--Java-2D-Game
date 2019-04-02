@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 
-public class Menu extends DynamicBackground implements Updatable{
+public class Menu extends DynamicBackground implements Screen{
     
     public double orbitX = -700; /* x-coordinate in orbit's center */
     public double orbitY = -600; /* y-coordinate in orbit's center */
@@ -30,15 +30,14 @@ public class Menu extends DynamicBackground implements Updatable{
     public void mousePress(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-        State St = State.getInstance();
         if (mx>60 && mx<210 && my>250 && my<290) //Play button
-            St.setState(StartingClass.starter);
+            StartingClass.setScreen(StartingClass.starter);
         else if (mx>60 && mx<210 && my>300 && my<340) // intro button
-            St.setState(Intro.getInstance());
+            StartingClass.setScreen(Intro.getInstance());
         else if (mx>60 && mx<210 && my>350 && my<390) //guide button
-            St.setState(Guide.getInstance());
+            StartingClass.setScreen(Guide.getInstance());
         else if (mx>60 && mx<210 && my>400 && my<440) // credits button
-          St.setState(credits.getInstance());
+          StartingClass.setScreen(credits.getInstance());
         else if(mx>60 && mx<210 && my>450 && my<490)
             System.exit(0);
         

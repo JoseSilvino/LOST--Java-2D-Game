@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 
-public class Death extends DynamicBackground implements Updatable{
+public class Death extends DynamicBackground implements Screen{
     
     public double orbitX = -110; /* x-coordinate in orbit's center */
     public double orbitY = -60; /* y-coordinate in orbit's center */
@@ -32,12 +32,11 @@ public class Death extends DynamicBackground implements Updatable{
         int my = e.getY();
         
         StartingClass.restart();
-        State St = State.getInstance();
         if (mx>60 && mx<210 && my>350 && my<390){
-            St.setState(Menu.getInstance());
+            StartingClass.setScreen(Menu.getInstance());
         }
         else if(mx>60 && mx<210 && my>400 && my<440){
-            St.setState(StartingClass.starter);
+            StartingClass.setScreen(StartingClass.starter);
         }
     }
 

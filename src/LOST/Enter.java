@@ -24,8 +24,7 @@ public class Enter implements Action {
     }
     @Override
     public void press() {
-        State St = State.getInstance();
-        St.setState(StartingClass.starter);
+        StartingClass.setScreen(StartingClass.starter);
     }
     
 }

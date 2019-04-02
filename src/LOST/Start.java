@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
  *
  * @author Neto
  */
-public class Start implements Updatable {
+public class Start implements Screen {
 
     @Override
     public void update() { }
@@ -21,11 +21,16 @@ public class Start implements Updatable {
     @Override
     public void setMousePress(boolean mousePress) {
     }
-
+    private static class St{
+        private static final Start INSTANCE = new Start();
+    }
+    public static Start getInstance(){
+        return St.INSTANCE;
+    }
     @Override
     public void pressKey(KeyEvent e) {
        if(e.getKeyCode()==KeyEvent.VK_SPACE) {
-           State.getInstance().setState(Menu.getInstance());
+           StartingClass.setScreen(Menu.getInstance());
        }
     }
 
